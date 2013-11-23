@@ -25,7 +25,7 @@ class Controller_Transfer extends Controller {
                 $comment = htmlspecialchars($_POST['comment']);
                 
                 $sock = fsockopen($host, 2000);
-                $request = "GET /make.php?user_id={$user_id}&money={$money}&receiver_name={$receiver_name}&receiver_number={$receiver_details}&receiver_number={$receiver_number}&comment={$comment} HTTP/1.1\r\n";
+                $request = "GET /make.php?user_id={$user_id}&money={$money}&receiver_name={$_POST['receiver_name']}&receiver_details={$_POST['receiver_details']}&receiver_number={$_POST['receiver_number']}&comment={$_POST['comment']} HTTP/1.1\r\n";
                 $request .= "Host: {$host}:2000\r\n";
                 $request .= "Connection: Close\r\n\r\n";
                 fputs($sock, $request);

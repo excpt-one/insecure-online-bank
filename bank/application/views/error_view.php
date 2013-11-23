@@ -1,0 +1,3 @@
+<div class="container">
+        <h1>Произошла ошибка!</h1>
+</div>

@@ -3,11 +3,8 @@
 class Controller_Transfer extends Controller {
     
     function __construct() {
-		//$this->model = new Model_Transfer();
-        //$this->model_bill = new Model_Bill();
-        // Connect to default MongoDB
-        $mongo_connection = new Mongo('mongodb://localhost:27017');
-        $this->mongo_db = $mongo_connection->online_bank;
+        
+        $this->db = new Model_Transfer();
 		$this->view = new View();
 	}
     
@@ -34,27 +31,13 @@ class Controller_Transfer extends Controller {
                 while ($s = fgets($sock))
                     $response .= $s;
                 
-                $response = substr($response, strpos($response, "\r\n\r\n"));
-                //$response = 'Some response will be here...';
-                
-                $item = array(
-                    'sender' => $user_id,
-                    'money' => $money,
-                    'receiver_name' => $receiver_name,
-                    'receiver_details' => $receiver_details,
-                    'receiver_number' => $receiver_number,
-                    'comment' => $comment,
-                    'response' => $response,
-                    'date' => date('d-m-Y H:i')
-                );
-                
+                $response = substr($response, strpos($response, "\r\n\r\n"));                
                 $data = array(
                     'success' => true,
                     'response' => $response
                 );
                 
-                //print 'money' . $money;
-                $this->mongo_db->transactions->insert($item);
+                $this->db->addTransaction($user_id, $money, $receiver_name, $receiver_details, $receiver_number, $comment, $response, date('d-m-Y H:i'));
             } else {
                 $data = array(
                     'error' => true,
@@ -80,7 +63,7 @@ class Controller_Transfer extends Controller {
         
         if ($user_id = User::getUserId()) {
             $data = array(
-                'transactions' => $this->mongo_db->transactions->find(array('sender' => $user_id))
+                'transactions' => $this->db->usersTransactions($user_id)
             );
             $this->view->generate('transfers_history_view.php', 'template_view.php', $data);
         } else {
@@ -91,9 +74,7 @@ class Controller_Transfer extends Controller {
     
     function action_detail($transfer_json) {
         
-        $result = $this->mongo_db->execute("return db.transactions.findOne({" . $transfer_json . "});");
-        $data = $result['retval'];
-        
+        $data = $this->mongo_db->getTransaction($transfer_json);
         $this->view->generate('transfer_detail_view.php', 'template_view.php', $data);
         
     }

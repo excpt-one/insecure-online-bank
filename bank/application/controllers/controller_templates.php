@@ -4,8 +4,8 @@ class Controller_Templates extends Controller {
     
     function __construct() {
         
-		$this->model = new Model_Templates();
-		$this->view = new View();
+        $this->model = new Model_Templates();
+        $this->view = new View();
         
 	}
     

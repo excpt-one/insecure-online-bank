@@ -6,6 +6,7 @@ class Controller_Transfer extends Controller {
         
         $this->db = new Model_Transfer();
 		$this->view = new View();
+        
 	}
     
     function action_index() {

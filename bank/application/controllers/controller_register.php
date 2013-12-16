@@ -32,6 +32,6 @@ class Controller_Register extends Controller {
             header('Location: http://' . $host);
         }
         
-    }  
+    }
     
 }

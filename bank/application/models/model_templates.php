@@ -23,6 +23,7 @@ class Model_Templates extends Model {
         $templates = array();
         while ($data = $result->fetch()) {
             $item = array();
+            
             foreach ($data as $id => $val) {
                 $item[$id] = $val;
             }

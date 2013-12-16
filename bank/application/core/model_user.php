@@ -139,4 +139,5 @@ class ModelUser extends Model {
             return false;
         
     }
+    
 }

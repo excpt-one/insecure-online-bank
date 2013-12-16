@@ -3,8 +3,10 @@
 class Controller_Templates extends Controller {
     
     function __construct() {
+        
 		$this->model = new Model_Templates();
 		$this->view = new View();
+        
 	}
     
     function action_index() {
@@ -90,8 +92,6 @@ class Controller_Templates extends Controller {
             if ($data = $this->model->getById($template_id)) {
                 $this->view->generate('template_edit_view.php', 'template_view.php', $data);
             } else {
-                //var_dump($data);
-                //print $template_id;
                 Route::ErrorPage404();
             }
         } else {

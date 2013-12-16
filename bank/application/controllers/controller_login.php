@@ -3,6 +3,7 @@
 class Controller_Login extends Controller {
 	
 	function action_index()	{
+	   
         $data = array();
 		if (isset($_POST['login']) && isset($_POST['password'])) {
 			$login = $_POST['login'];
@@ -19,7 +20,6 @@ class Controller_Login extends Controller {
                 $this->view->generate('error_view.php', 'template_view.php', $data);
             }
 		} else {
-            //print 'ERROR';
 			$this->view->generate('login_view.php', 'template_view.php');
 		}
 		

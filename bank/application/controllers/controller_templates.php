@@ -7,7 +7,7 @@ class Controller_Templates extends Controller {
         $this->model = new Model_Templates();
         $this->view = new View();
         
-	}
+    }
     
     function action_index() {
         

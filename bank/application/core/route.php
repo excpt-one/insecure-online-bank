@@ -30,7 +30,7 @@ class Route {
 		$action_name = 'action_'.$action_name;
         
         // параметр для экшена
-        if (isset($routes[3]) && preg_match('/^\w+$/', $routes[3]) === 1) {
+        if (isset($routes[3])) {
 			$parameter_value = urldecode($routes[3]);
 		} else {
 		    $parameter_value = NULL;

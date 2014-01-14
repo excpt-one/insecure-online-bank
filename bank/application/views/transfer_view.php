@@ -17,7 +17,7 @@
         </div>
         <div class="col-md-6">
             
-            <form action="" method="post">
+            <form action="/transfer" method="post">
                 <input type="hidden" name="host" value="127.0.0.1" />
                 <dl class="dl-horizontal">
                     <dt>Сумма перевода</dt>

@@ -25,19 +25,30 @@ class Controller_Templates extends Controller {
     function action_upload() {
         
         if ($user_id = User::getUserId()) {
-            if (isset($_FILES['xml'])) {
+            if (isset($_FILES['xml']) && !empty($_FILES['xml'])) {
                 $xml = simplexml_load_file($_FILES['xml']['tmp_name']);
                 unlink($_FILES['xml']['tmp_name']);
-                $title = $xml->title;
-                $money = $xml->money;
-                $receiver_name = $xml->receiver_name;
-                $receiver_details = $xml->receiver_details;
-                $receiver_number = $xml->receiver_number;
-                $description = $xml->description;
-                
-                $this->model->add($user_id, $title, $money, $receiver_name, $receiver_details, $receiver_number, $description);
+                if (!empty($xml->title) 
+                    && !empty($xml->money) 
+                    && !empty($xml->receiver_name)
+                    && !empty($xml->receiver_details)
+                    && !empty($xml->receiver_number)) {
+                    $title = $xml->title;
+                    $money = $xml->money;
+                    $receiver_name = $xml->receiver_name;
+                    $receiver_details = $xml->receiver_details;
+                    $receiver_number = $xml->receiver_number;
+                    $description = $xml->description;
+                    
+                    $this->model->add($user_id, $title, $money, $receiver_name, $receiver_details, $receiver_number, $description);
+                    $data = array("success" => true);
+                    $this->view->generate('template_upload_view.php', 'template_view.php', $data); 
+                } else {
+                    $data = array("error" => true);
+                    $this->view->generate('template_upload_view.php', 'template_view.php', $data);
+                }
             } else {
-                $this->view->generate('template_upload_view.php', 'template_view.php', $data);
+                $this->view->generate('template_upload_view.php', 'template_view.php');
             }
         } else {
             Route::ErrorPage404();
@@ -68,8 +79,12 @@ class Controller_Templates extends Controller {
     function action_edit($template_id) {
         
         if (isset($_POST['edit'])) {
-            if (!empty($_POST['title']) && !empty($_POST['money']) && !empty($_POST['receiver_name']) &&
-                !empty($_POST['receiver_details']) && !empty($_POST['receiver_number']) && !empty($_POST['description'])) {
+            if (!empty($_POST['title']) 
+                && !empty($_POST['money']) 
+                && !empty($_POST['receiver_name']) 
+                && !empty($_POST['receiver_details']) 
+                && !empty($_POST['receiver_number']) 
+                && !empty($_POST['description'])) {
                     $title = $_POST['title'];
                     $money = $_POST['money'];
                     $receiver_name = $_POST['receiver_name'];
@@ -103,15 +118,15 @@ class Controller_Templates extends Controller {
     function action_export($template_id) {
         
         if ($data = $this->model->getById($template_id)) {
-            $xml = new SimpleXMLElement('<root/>');
+            $xml = new SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><root/>');
             array_walk_recursive(array_flip($data), array($xml, 'addChild'));
             
             unset($data['owner']);
             
-            $text = $xml->asXML();
+            $text = html_entity_decode($xml->asXML());
             
             header('Content-Description: File Transfer');
-            header('Content-Type: application/octet-stream');
+            header('Content-Type: application/octet-stream; charset=utf-8');
             header('Content-Disposition: attachment; filename=template' . htmlspecialchars($template_id) . '.xml');
             header('Content-Transfer-Encoding: binary');
             header('Expires: 0');

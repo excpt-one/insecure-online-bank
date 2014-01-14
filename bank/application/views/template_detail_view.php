@@ -1,6 +1,6 @@
 <div class="container">
     <div class="page-header">
-        <h1>Шаблон <? print htmlspecialchars($data['title']) ?></h1>
+        <h1>Шаблон &laquo;<? print htmlspecialchars($data['title']) ?>&raquo;</h1>
     </div>
     
     <div class="row">

@@ -17,10 +17,13 @@
                 </div>
             <? else: ?>
                 <div class="alert alert-danger">
-                    <strong>Ошибка!</strong> Проверьте правильность ввода полей!
+                    <strong>Ошибка!</strong> Проверьте правильность ввода полей! 
                 </div>
             <? endif; ?>
         <? endif; ?>
+        <div class="col-md-12">
+        <p>Внимание! Длина пароля должна быть более 5 символов!</p>
+        </div>
         <div class="col-md-6">
             <form action="" method="post">
                 <dl class="dl-horizontal">

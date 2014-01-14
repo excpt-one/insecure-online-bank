@@ -34,8 +34,8 @@ class Model_Transfer extends Model {
     
     public function getTransaction($transfer_json) {
         
-        $result = $this->mongo_db->execute("return db.transactions.findOne({" . $transfer_json . "});");
-        return $result['retval'];
+        $result = $this->db->execute("return db.transactions.find(" . $transfer_json . ").toArray();");
+        return $result['retval'][0];
         
     }
     

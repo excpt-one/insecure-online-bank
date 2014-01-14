@@ -29,7 +29,8 @@ class User {
     
     static function register($login, $password) {
         
-        ModelUser::addUser($login, $password);
+        if (!User::loginExist($login))
+            ModelUser::addUser($login, $password);
         
     }
     

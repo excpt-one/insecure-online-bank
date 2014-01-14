@@ -15,7 +15,7 @@
             <td><? print htmlspecialchars($transaction['date']) ?></td>        
             <td><? print htmlspecialchars($transaction['receiver_name']) ?></td>
             <td><? print htmlspecialchars($transaction['money']) ?></td>
-            <td><a href="/transfer/detail/_id%3AObjectId%28%27<? print $transaction['_id']->{'$id'} ?>%27%29" type="submit" class="btn btn-default btn-xs" role="button">Подробно</a></td>
+            <td><a href="/transfer/detail/%7B_id%3AObjectId%28%27<? print $transaction['_id']->{'$id'} ?>%27%29%7D" type="submit" class="btn btn-default btn-xs" role="button">Подробно</a></td>
         </tr>
     <? endforeach; ?>
     </table>

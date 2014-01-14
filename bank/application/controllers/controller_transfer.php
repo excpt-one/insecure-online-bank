@@ -14,7 +14,12 @@ class Controller_Transfer extends Controller {
         $user_id = User::getUserId();
         
         if (isset($_POST['transfer']) && $user_id) {
-            if (!empty($_POST['money']) && !empty($_POST['receiver_name']) && !empty($_POST['receiver_details']) && !empty($_POST['receiver_number']) && !empty($_POST['comment'])) {
+            if (!empty($_POST['money'])
+                && !empty($_POST['receiver_name']) 
+                && !empty($_POST['receiver_details']) 
+                && !empty($_POST['receiver_number']) 
+                && !empty($_POST['comment'])) {
+                
                 $host = $_POST['host'];
                 $money = abs(intval($_POST['money']));
                 $receiver_name = htmlspecialchars($_POST['receiver_name']);
@@ -26,13 +31,16 @@ class Controller_Transfer extends Controller {
                 $request = "GET /make.php?user_id={$user_id}&money={$money}&receiver_name={$_POST['receiver_name']}&receiver_details={$_POST['receiver_details']}&receiver_number={$_POST['receiver_number']}&comment={$_POST['comment']} HTTP/1.1\r\n";
                 $request .= "Host: {$host}:2000\r\n";
                 $request .= "Connection: Close\r\n\r\n";
+                
                 fputs($sock, $request);
                 $response = "";
                 
                 while ($s = fgets($sock))
                     $response .= $s;
+
                 
-                $response = substr($response, strpos($response, "\r\n\r\n"));                
+                $response = mb_substr($response, strpos($response, "\r\n\r\n"));
+                $response = iconv(iconv_get_encoding($response), "utf-8", $response);
                 $data = array(
                     'success' => true,
                     'response' => $response
@@ -75,7 +83,7 @@ class Controller_Transfer extends Controller {
     
     function action_detail($transfer_json) {
         
-        $data = $this->mongo_db->getTransaction($transfer_json);
+        $data = $this->db->getTransaction($transfer_json);
         $this->view->generate('transfer_detail_view.php', 'template_view.php', $data);
         
     }

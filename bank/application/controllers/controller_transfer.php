@@ -32,15 +32,16 @@ class Controller_Transfer extends Controller {
                 $request .= "Host: {$host}:2000\r\n";
                 $request .= "Connection: Close\r\n\r\n";
                 
+                //print $request;
+                
                 fputs($sock, $request);
                 $response = "";
                 
                 while ($s = fgets($sock))
                     $response .= $s;
 
-                
-                $response = mb_substr($response, strpos($response, "\r\n\r\n"));
-                $response = iconv(iconv_get_encoding($response), "utf-8", $response);
+                $response = substr($response, strpos($response, "\r\n\r\n"));
+                //$response = iconv(iconv_get_encoding($response), "utf-8", $response);
                 $data = array(
                     'success' => true,
                     'response' => $response
